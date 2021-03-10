@@ -1,0 +1,42 @@
+package com.sellerapp.product;
+
+import com.sellerapp.seller.Seller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+public class ProductController {
+
+    @Autowired
+    private ProductService productservice;
+
+    @GetMapping("/product")
+    public List<Product> getProducts(){
+        return productservice.getProduct();
+    }
+
+    @GetMapping("/product/{id}")
+    public Optional<Product> getProductId(@PathVariable int id){
+        return productservice.getProductById(id);
+    }
+
+    @GetMapping("/product/seller/{id}")
+    public List<Product> getSellerProducts(@PathVariable int id){
+        return productservice.getSellerProducts(id);
+    }
+
+    @PostMapping("/product")
+     public void addProduct(@Validated @RequestBody Product product){
+        productservice.addProduct(product);
+    }
+
+    @PutMapping("/product")
+    public void updateProduct(@RequestBody Product product){ productservice.updateProduct(product);}
+
+    @DeleteMapping("/product/{id}")
+    public void deleteProduct(@PathVariable int id){ productservice.deleteProduct(id);}
+}
