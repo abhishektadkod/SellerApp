@@ -1,6 +1,5 @@
 package com.sellerapp.customer;
 
-import com.sellerapp.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

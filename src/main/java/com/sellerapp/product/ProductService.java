@@ -1,6 +1,5 @@
 package com.sellerapp.product;
 
-import com.sellerapp.seller.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
