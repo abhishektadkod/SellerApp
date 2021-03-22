@@ -1,6 +1,7 @@
 package com.sellerapp.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,9 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-     public void addProduct(@Validated @RequestBody Product product){
+     public ResponseEntity<String> addProduct(@Validated @RequestBody Product product){
         productservice.addProduct(product);
+        return ResponseEntity.ok("Product Added Successfully!");
     }
 
     @PutMapping("/product")

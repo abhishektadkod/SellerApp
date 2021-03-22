@@ -1,11 +1,11 @@
 package com.sellerapp.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,7 +16,7 @@ public class OrderController {
     private OrderService orderservice;
 
     @GetMapping("/orders")
-    public List<Orders> getOrdersS(){
+    public List<OrderResponse> getOrdersS(){
         return orderservice.getOrders();
     }
 
@@ -26,12 +26,14 @@ public class OrderController {
     }
 
     @GetMapping("/orders/seller/{id}")
-    public Set<Orders> getOrdersBySeller(@PathVariable int id){ return  orderservice.getOrdersBySeller(id);}
+    public Set<OrderResponse> getOrdersBySeller(@PathVariable int id){ return  orderservice.getOrdersBySeller(id);}
 
 
     @PostMapping(value="/orders")
-    public void addOrders(@Validated @RequestBody Orders Orders){
+    public ResponseEntity<String> addOrders (@Validated @RequestBody Orders Orders) throws Exception {
         orderservice.addOrders(Orders);
+        return ResponseEntity.ok("Order Added Successfully!");
+
     }
 
     @PutMapping("/orders")

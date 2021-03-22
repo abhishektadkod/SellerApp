@@ -22,25 +22,28 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Orders> getOrders() {
-        List<Orders> Orders = new ArrayList<>();
-        orderRepository.findAll().forEach(Orders::add);
-        return Orders;
+    private OrderResponse orderResponse = new OrderResponse();
+
+    public List<OrderResponse> getOrders() {
+        var orders = orderRepository.findAll();
+        return orderResponse.getOrderResponse(orders);
     }
 
     public Optional<Orders> getOrdersById(int id){
         return orderRepository.findById(id);
     }
 
-    public Set<Orders> getOrdersBySeller(int id) {
-        Set<Orders> orders = new HashSet<>();
+    public Set<OrderResponse> getOrdersBySeller(int id) {
+        List<Orders> orders = new ArrayList<>();
 
         for(Product products : productRepository.findBySellerSid(id)) {
             for(OrderItems orderItems : orderItemsRepository.findByProductsPid(products.getPid())){
                 orders.add(orderItems.getOrders());
             }
         }
-        return orders;
+        Set<OrderResponse> order = new HashSet<OrderResponse>(orderResponse.getOrderResponse(orders));
+
+        return order;
     }
 
     public void addOrders(Orders orders) {

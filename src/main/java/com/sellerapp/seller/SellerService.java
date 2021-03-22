@@ -35,4 +35,7 @@ public class SellerService {
         sellerRepository.deleteById(id);
     }
 
+    public String loginSeller(Seller seller) {
+        return "HI";
+    }
 }

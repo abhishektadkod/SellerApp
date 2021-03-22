@@ -1,6 +1,7 @@
 package com.sellerapp.seller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,14 @@ public class SellerController {
     }
 
     @PostMapping("/seller")
-     public void addSeller(@RequestBody Seller seller){
+     public ResponseEntity<String> addSeller(@RequestBody Seller seller){
         sellerservice.addSeller(seller);
+        return ResponseEntity.ok("Seller Added Successfully!");
+    }
+
+    @PostMapping("/seller/login")
+    public ResponseEntity<String> loginSeller(@RequestBody Seller seller){
+        return ResponseEntity.ok(sellerservice.loginSeller(seller));
     }
 
     @PutMapping("/seller")
