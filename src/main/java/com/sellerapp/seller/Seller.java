@@ -23,8 +23,8 @@ public class Seller {
     private int sid;
 
     @NotNull
-    @Column(name = "username")
-    private String username;
+    @Column(name = "email")
+    private String email;
 
     @NotNull
     @Column(name = "password")
