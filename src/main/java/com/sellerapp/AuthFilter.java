@@ -34,7 +34,6 @@ public class AuthFilter extends GenericFilterBean {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
 
         String authHeader = httpRequest.getHeader("Authorization");
-        logger.log(Level.INFO, "logging: {0} ", sellerRepository.findById(1).get().getSid());
         if(authHeader != null) {
             String[] authHeaderArr = authHeader.split("Bearer ");
             if(authHeaderArr.length > 1 && authHeaderArr[1] != null) {
@@ -43,19 +42,18 @@ public class AuthFilter extends GenericFilterBean {
                     Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
                             .parseClaimsJws(token).getBody();
 
-
                     httpRequest.setAttribute("sid", sellerRepository.findByEmail(claims.get("email").toString()).getSid());
+
                 }catch (Exception e) {
-                    httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "invalid/expired token" +e.toString()+Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
-                            .parseClaimsJws(token).getBody().get("email").toString());
+                    httpResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "invalid/expired token");
                     return;
                 }
             } else {
-                httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "Authorization token must be Bearer [token]");
+                httpResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Authorization token must be Bearer [token]");
                 return;
             }
         } else {
-            httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "Authorization token must be provided");
+            httpResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Authorization token must be provided");
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);

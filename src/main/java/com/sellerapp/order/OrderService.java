@@ -1,7 +1,5 @@
 package com.sellerapp.order;
 
-
-import com.sellerapp.product.Product;
 import com.sellerapp.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,39 +31,28 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public Set<OrderResponse> getOrdersBySeller(int id) {
-        List<Orders> orders = new ArrayList<>();
-
-        for(Product products : productRepository.findBySellerSid(id)) {
-            for(OrderItems orderItems : orderItemsRepository.findByProductsPid(products.getPid())){
-                orders.add(orderItems.getOrders());
-            }
-        }
+    public Set<OrderResponse> getOrdersBySeller(int sid) {
+        List<Orders> orders = orderRepository.findBySellerSid(sid);
         Set<OrderResponse> order = new HashSet<OrderResponse>(orderResponse.getOrderResponse(orders));
-
         return order;
     }
 
     public void addOrders(Orders orders) {
-        Logger logger = Logger.getLogger(OrderService.class.getName());
-        logger.log(Level.INFO, "logging: {0} ", orders.getOrderItems().size());
-
         orderRepository.save(orders);
-        List<OrderItems> orderItems = new ArrayList<>();
-
         for(OrderItems item : orders.getOrderItems()) {
             item.setOrders(orders);
             orderItemsRepository.save(item);
         }
     }
 
-    public void updateOrders(Orders Orders) {
-        orderRepository.save(Orders);
+    public void updateOrdersById(Orders orders, int oid) {
+        Optional<Orders> order = orderRepository.findById(oid);
+        order.get().setStatus(orders.getStatus());
+        orderRepository.save(order.get());
     }
 
     public void deleteOrders(int id){
         orderRepository.deleteById(id);
     }
-
 
 }

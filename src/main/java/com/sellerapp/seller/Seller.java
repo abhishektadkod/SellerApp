@@ -44,9 +44,5 @@ public class Seller {
     @Column(name="available")
     private boolean available;
 
-    /*@OneToMany(mappedBy = "seller")
-    @JsonManagedReference
-    private List<Product> products;*/
-
 }
 

@@ -40,7 +40,12 @@ public class DemoApplication {
 
 		AuthFilter authFilter = new AuthFilter(sellerRepository);
 		registrationBean.setFilter(authFilter);
-		registrationBean.addUrlPatterns("/*");
+		registrationBean.addUrlPatterns("/details/*");
+		registrationBean.addUrlPatterns("/update/*");
+		registrationBean.addUrlPatterns("/delete/*");
+		registrationBean.addUrlPatterns("/product/*");
+		registrationBean.addUrlPatterns("/orders/seller");
+
 		return registrationBean;
 	}
 

@@ -2,9 +2,11 @@ package com.sellerapp.seller;
 
 import com.sellerapp.AuthException;
 import com.sellerapp.Constants;
+import com.sellerapp.DatabaseException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -16,16 +18,6 @@ public class SellerService {
 
     @Autowired
     private SellerRepository sellerRepository;
-
-    public List<Seller> getSeller() {
-        List<Seller> sellers = new ArrayList<>();
-        sellerRepository.findAll().forEach(sellers::add);
-        return sellers;
-    }
-
-    public Optional<Seller> getSellerById(int id){
-        return sellerRepository.findById(id);
-    }
 
     private Map<String, String> generateJWTToken(Seller seller) {
         long timestamp = System.currentTimeMillis();
@@ -42,41 +34,28 @@ public class SellerService {
         return map;
     }
 
-    public Map<String,String> addSeller(Seller seller) {
+    public List<Seller> getSeller() {
+        List<Seller> sellers = new ArrayList<>();
+        sellerRepository.findAll().forEach(sellers::add);
+        return sellers;
+    }
+
+    public Optional<Seller> getSellerById(int id){
+        return sellerRepository.findById(id);
+    }
+
+    public Map<String,String> addSeller(Seller seller) throws DatabaseException {
         String password = seller.getPassword();
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         seller.setPassword(hashedPassword);
         Long count = sellerRepository.countByEmail(seller.getEmail());
         if (count > 0)
-            throw new AuthException("Email already in use");
+            throw new DatabaseException("Email already in use");
         sellerRepository.save(seller);
         return generateJWTToken(seller);
     }
 
-    public Map<String, String> updateSeller(int sid, boolean available) {
-
-        Map<String, String> map = new HashMap<>();
-        try {
-            Optional<Seller> seller = sellerRepository.findById(sid);
-            if(seller.isPresent()){
-                seller.get().setAvailable(available);
-                sellerRepository.save(seller.get());
-                map.put("response", "Update Successful!");
-            }
-        }
-        catch (Exception e){
-            throw new AuthException(e.getMessage().toString());
-        }
-
-    return map;
-
-    }
-
-    public void deleteSeller(int id){
-        sellerRepository.deleteById(id);
-    }
-
-    public Map<String, String> loginSeller(Seller seller) {
+    public Map<String, String> loginSeller(Seller seller) throws DatabaseException{
         String password = seller.getPassword();
         String email  = seller.getEmail();
 
@@ -92,4 +71,25 @@ public class SellerService {
             throw new AuthException("Invalid email/password");
         }
     }
+
+    public Map<String, String> updateSeller(int sid, boolean available) {
+
+        Map<String, String> map = new HashMap<>();
+            Optional<Seller> seller = sellerRepository.findById(sid);
+            if(seller.isPresent()){
+                seller.get().setAvailable(available);
+                sellerRepository.save(seller.get());
+                map.put("response", "Update Successful!");
+            }
+            else{
+                throw new DatabaseException("Seller not present! Login again");
+            }
+    return map;
+
+    }
+
+    public void deleteSeller(int id){
+        sellerRepository.deleteById(id);
+    }
+
 }

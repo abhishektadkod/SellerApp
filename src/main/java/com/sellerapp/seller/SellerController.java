@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 @RestController
 public class SellerController {
 
-    Logger logger = Logger.getLogger(SellerController.class.getName());
-
     @Autowired
     private SellerService sellerservice;
 
@@ -27,15 +25,12 @@ public class SellerController {
 
     @RequestMapping("/details/seller")
     public Optional<Seller> getSellerId(HttpServletRequest request) throws AuthException{
-
-        logger.log(Level.INFO, "logging: {0} ", request.getRequestURL().toString());
-
         try {
             int sid = (Integer) request.getAttribute("sid");
             return sellerservice.getSellerById(sid);
         }
         catch(Exception e) {
-            throw new AuthException(e.getMessage().toString());
+            throw new AuthException("Authentication token not provided!");
         }
     }
 
@@ -51,8 +46,13 @@ public class SellerController {
 
     @PutMapping("/update/seller")
     public Map<String, String> updateSeller(HttpServletRequest request, @RequestBody Seller seller) throws AuthException{
-        int sid =(Integer) request.getAttribute("sid");
-        return sellerservice.updateSeller(sid,seller.isAvailable());
+        try {
+            int sid = (Integer) request.getAttribute("sid");
+            return sellerservice.updateSeller(sid,seller.isAvailable());
+        }
+        catch (Exception e){
+            throw new AuthException("Authentication token not provided!");
+        }
     }
 
     @DeleteMapping("/delete/seller")

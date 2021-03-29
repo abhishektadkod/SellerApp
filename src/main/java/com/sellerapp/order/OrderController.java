@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,9 +26,10 @@ public class OrderController {
         return orderservice.getOrdersById(id);
     }
 
-    @GetMapping("/orders/seller/{id}")
-    public Set<OrderResponse> getOrdersBySeller(@PathVariable int id){ return  orderservice.getOrdersBySeller(id);}
-
+    @GetMapping("/orders/seller")
+    public Set<OrderResponse> getOrdersBySeller(HttpServletRequest request){
+        int sid =(Integer) request.getAttribute("sid");
+        return  orderservice.getOrdersBySeller(sid);}
 
     @PostMapping(value="/orders")
     public ResponseEntity<String> addOrders (@Validated @RequestBody Orders Orders) throws Exception {
@@ -36,8 +38,8 @@ public class OrderController {
 
     }
 
-    @PutMapping("/orders")
-    public void updateOrders(@RequestBody Orders Orders){ orderservice.updateOrders(Orders);}
+    @PutMapping("/orders/{id}") 
+    public void updateOrdersById(@RequestBody Orders Orders, @PathVariable int id){ orderservice.updateOrdersById(Orders,id);}
 
     @DeleteMapping("/orders/{id}")
     public void deleteOrders(@PathVariable int id){ orderservice.deleteOrders(id);}

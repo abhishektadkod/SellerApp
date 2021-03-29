@@ -4,8 +4,8 @@ com/sellerapp/product/ProductRepository.java
  com.sellerapp.product.ProductRepository
 com/sellerapp/order/Orders.java
  com.sellerapp.order.Orders
-com/sellerapp/order/OrderService.java
- com.sellerapp.order.OrderService
+com/sellerapp/product/ProductService.java
+ com.sellerapp.product.ProductService
 com/sellerapp/order/OrderItemsRepository.java
  com.sellerapp.order.OrderItemsRepository
 com/sellerapp/AuthException.java
@@ -16,31 +16,33 @@ com/sellerapp/order/OrderItems.java
  com.sellerapp.order.OrderItems
 com/sellerapp/Constants.java
  com.sellerapp.Constants
-com/sellerapp/order/OrderRepository.java
- com.sellerapp.order.OrderRepository
+com/sellerapp/seller/SellerService.java
+ com.sellerapp.seller.SellerService
 com/sellerapp/seller/Seller.java
  com.sellerapp.seller.Seller
 com/sellerapp/customer/CustomerController.java
  com.sellerapp.customer.CustomerController
 com/sellerapp/customer/Customer.java
  com.sellerapp.customer.Customer
-com/sellerapp/order/OrderController.java
- com.sellerapp.order.OrderController
 com/sellerapp/product/ProductController.java
  com.sellerapp.product.ProductController
-com/sellerapp/product/ProductService.java
- com.sellerapp.product.ProductService
+com/sellerapp/DatabaseException.java
+ com.sellerapp.DatabaseException
+com/sellerapp/order/OrderService.java
+ com.sellerapp.order.OrderService
+com/sellerapp/order/OrderRepository.java
+ com.sellerapp.order.OrderRepository
 com/sellerapp/customer/CustomerService.java
  com.sellerapp.customer.CustomerService
-com/sellerapp/seller/SellerController.java
- com.sellerapp.seller.SellerController
-com/sellerapp/customer/CustomerRepository.java
- com.sellerapp.customer.CustomerRepository
-com/sellerapp/seller/SellerService.java
- com.sellerapp.seller.SellerService
-com/sellerapp/seller/SellerRepository.java
- com.sellerapp.seller.SellerRepository
 com/sellerapp/AuthFilter.java
  com.sellerapp.AuthFilter
+com/sellerapp/customer/CustomerRepository.java
+ com.sellerapp.customer.CustomerRepository
 com/sellerapp/DemoApplication.java
  com.sellerapp.DemoApplication
+com/sellerapp/seller/SellerRepository.java
+ com.sellerapp.seller.SellerRepository
+com/sellerapp/seller/SellerController.java
+ com.sellerapp.seller.SellerController
+com/sellerapp/order/OrderController.java
+ com.sellerapp.order.OrderController

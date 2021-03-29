@@ -1,5 +1,8 @@
 package com.sellerapp.product;
 
+import com.sellerapp.AuthException;
+import com.sellerapp.DatabaseException;
+import com.sellerapp.seller.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +30,29 @@ public class ProductService {
         return productRepository.findBySellerSid(id);
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product,int sid) {
+        Seller seller = new Seller();
+        seller.setSid(sid);
+        product.setSeller(seller);
         System.out.println(product.getSeller().getName());
         productRepository.save(product);
     }
 
-    public void updateProduct(Product product) { productRepository.save(product); }
+    public void updateProduct(Product product, int sid) throws DatabaseException{
+        Optional<Product> products = productRepository.findById(product.getPid());
+        if(products.isPresent()){
+            if(products.get().getSeller().getSid()==sid){
+                products.get().setAvailable(product.isAvailable());
+                productRepository.save(products.get());
+            }
+            else {
+                throw new DatabaseException("This product Not Registered for the Seller");
+            }
+        }
+        else{
+            throw new DatabaseException("Product not present in the database!");
+        }
+    }
 
     public void deleteProduct(int id) { productRepository.deleteById(id); }
 
