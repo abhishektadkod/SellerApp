@@ -1,11 +1,12 @@
 package com.sellerapp.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class OrderController {
     private OrderService orderservice;
 
     @GetMapping("/orders")
-    public List<Orders> getOrdersS(){
+    public List<OrderResponse> getOrdersS(){
         return orderservice.getOrders();
     }
 
@@ -25,17 +26,20 @@ public class OrderController {
         return orderservice.getOrdersById(id);
     }
 
-    @GetMapping("/orders/seller/{id}")
-    public Set<Orders> getOrdersBySeller(@PathVariable int id){ return  orderservice.getOrdersBySeller(id);}
-
+    @GetMapping("/orders/seller")
+    public Set<OrderResponse> getOrdersBySeller(HttpServletRequest request){
+        int sid =(Integer) request.getAttribute("sid");
+        return  orderservice.getOrdersBySeller(sid);}
 
     @PostMapping(value="/orders")
-    public void addOrders(@Validated @RequestBody Orders Orders){
+    public ResponseEntity<String> addOrders (@Validated @RequestBody Orders Orders) throws Exception {
         orderservice.addOrders(Orders);
+        return ResponseEntity.ok("Order Added Successfully!");
+
     }
 
-    @PutMapping("/orders")
-    public void updateOrders(@RequestBody Orders Orders){ orderservice.updateOrders(Orders);}
+    @PutMapping("/orders/{id}")
+    public void updateOrdersById(@RequestBody Orders Orders, @PathVariable int id){ orderservice.updateOrdersById(Orders,id);}
 
     @DeleteMapping("/orders/{id}")
     public void deleteOrders(@PathVariable int id){ orderservice.deleteOrders(id);}

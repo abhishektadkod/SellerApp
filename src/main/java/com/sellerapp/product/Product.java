@@ -12,8 +12,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
-
 
 @Data
 @NoArgsConstructor
@@ -46,6 +44,10 @@ public class Product {
     @NotNull
     @Column(name="available")
     private boolean available;
+
+    @NotNull
+    @Column(name="basic_eta")
+    private int basic_eta;
 
     @NotNull
     @ManyToOne

@@ -25,6 +25,8 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation "org.mindrot:jbcrypt:0.4"
+	implementation('io.jsonwebtoken:jjwt:0.2')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

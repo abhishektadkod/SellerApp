@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sellerapp.customer.Customer;
 import com.sellerapp.product.Product;
+import com.sellerapp.seller.Seller;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,9 +30,13 @@ public class Orders {
 
     @NotNull
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "cid")
     private Customer customer;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "sid")
+    private Seller seller;
 
     @NotNull
     @Column(name = "datetime")
@@ -41,6 +46,10 @@ public class Orders {
     @NotNull
     @Column(name = "status")
     private String status;
+
+    @NotNull
+    @Column(name = "source")
+    private String source;
 
     @OneToMany(mappedBy = "orders")
     @JsonManagedReference

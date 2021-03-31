@@ -23,6 +23,14 @@ public class Seller {
     private int sid;
 
     @NotNull
+    @Column(name = "email")
+    private String email;
+
+    @NotNull
+    @Column(name = "password")
+    private String password;
+
+    @NotNull
     @Column(name = "datetime")
     @CreationTimestamp
     private Date date;
@@ -35,10 +43,6 @@ public class Seller {
     @NotNull
     @Column(name="available")
     private boolean available;
-
-    @OneToMany(mappedBy = "seller")
-    @JsonManagedReference
-    private List<Product> products;
 
 }
 
