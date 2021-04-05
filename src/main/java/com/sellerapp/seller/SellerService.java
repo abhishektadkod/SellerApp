@@ -21,14 +21,14 @@ public class SellerService {
     private SellerJwt sellerJwt;
 
 
-    public List<Seller> getSeller() {
-        List<Seller> sellers = new ArrayList<>();
-        sellerRepository.findAll().forEach(sellers::add);
-        return sellers;
+    public List<SellerEntity> getSeller() {
+        List<SellerEntity> sellerEntities = new ArrayList<>();
+        sellerRepository.findAll().forEach(sellerEntities::add);
+        return sellerEntities;
     }
 
     public SellerResponseView getSellerById(int id){
-        Optional<Seller> seller = sellerRepository.findById(id);
+        Optional<SellerEntity> seller = sellerRepository.findById(id);
         SellerResponseView response = sellerDTO.ConvertToResponseView(seller);
         return response;
     }
@@ -37,7 +37,7 @@ public class SellerService {
         String password = sellerRequestView.getPassword();
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         sellerRequestView.setPassword(hashedPassword);
-        Seller sellerEntity = sellerDTO.ConvertToSellerEntity(sellerRequestView);
+        SellerEntity sellerEntity = sellerDTO.ConvertToSellerEntity(sellerRequestView);
         Long count = sellerRepository.countByEmail(sellerRequestView.getEmail());
         if (count > 0)
             throw new DatabaseException("Email already in use");
@@ -72,7 +72,7 @@ public class SellerService {
     public Map<String, String> updateSeller(int sid, boolean available) {
 
         Map<String, String> map = new HashMap<>();
-            Optional<Seller> seller = sellerRepository.findById(sid);
+            Optional<SellerEntity> seller = sellerRepository.findById(sid);
             if(seller.isPresent()){
                 seller.get().setAvailable(available);
                 sellerRepository.save(seller.get());

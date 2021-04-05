@@ -1,10 +1,7 @@
 package com.sellerapp.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sellerapp.order.OrderItems;
-import com.sellerapp.order.Orders;
-import com.sellerapp.seller.Seller;
+import com.sellerapp.seller.SellerEntity;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,6 +50,6 @@ public class Product {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "sid")
-    private Seller seller;
+    private SellerEntity sellerEntity;
 
 }

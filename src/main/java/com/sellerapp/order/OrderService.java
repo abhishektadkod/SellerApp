@@ -3,13 +3,11 @@ package com.sellerapp.order;
 import com.sellerapp.customer.Customer;
 import com.sellerapp.product.Product;
 import com.sellerapp.product.ProductRepository;
-import com.sellerapp.seller.Seller;
+import com.sellerapp.seller.SellerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 public class OrderService {
@@ -32,7 +30,7 @@ public class OrderService {
     }
 
     public Set<OrderResponse> getOrdersBySeller(int sid) {
-        List<Orders> orders = orderRepository.findBySellerSid(sid);
+        List<Orders> orders = orderRepository.findBySellerEntitySellerId(sid);
         Set<OrderResponse> order = new HashSet<OrderResponse>(orderResponse.getOrderResponse(orders));
         return order;
     }
@@ -40,14 +38,14 @@ public class OrderService {
     public void addOrders(OrderRequestView orders) {
         Orders order = new Orders();
         Customer customer = new Customer();
-        Seller seller = new Seller();
+        SellerEntity sellerEntity = new SellerEntity();
         List<OrderItems> orderItems = new ArrayList<OrderItems>();
         float totalPrice=0;
 
         customer.setCid(orders.getCid());
-        seller.setSid(orders.getSid());
+        sellerEntity.setSellerId(orders.getSid());
         order.setCustomer(customer);
-        order.setSeller(seller);
+        order.setSellerEntity(sellerEntity);
         order.setStatus(orders.getStatus());
         order.setSource(orders.getSource());
 

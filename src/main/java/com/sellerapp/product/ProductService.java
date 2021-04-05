@@ -1,8 +1,7 @@
 package com.sellerapp.product;
 
-import com.sellerapp.AuthException;
 import com.sellerapp.DatabaseException;
-import com.sellerapp.seller.Seller;
+import com.sellerapp.seller.SellerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,21 +26,21 @@ public class ProductService {
     }
 
     public List<Product> getSellerProducts(int id) {
-        return productRepository.findBySellerSid(id);
+        return productRepository.findBySellerEntitySellerId(id);
     }
 
     public void addProduct(Product product,int sid) {
-        Seller seller = new Seller();
-        seller.setSid(sid);
-        product.setSeller(seller);
-        System.out.println(product.getSeller().getName());
+        SellerEntity sellerEntity = new SellerEntity();
+        sellerEntity.setSellerId(sid);
+        product.setSellerEntity(sellerEntity);
+        System.out.println(product.getSellerEntity().getName());
         productRepository.save(product);
     }
 
     public void updateProduct(Product product, int sid) throws DatabaseException{
         Optional<Product> products = productRepository.findById(product.getPid());
         if(products.isPresent()){
-            if(products.get().getSeller().getSid()==sid){
+            if(products.get().getSellerEntity().getSellerId()==sid){
                 products.get().setAvailable(product.isAvailable());
                 productRepository.save(products.get());
             }

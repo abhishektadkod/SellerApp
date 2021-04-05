@@ -26,7 +26,7 @@ public class OrderResponse {
             OrderResponse temp = new OrderResponse();
             temp.setOid(o.getOid());
             temp.setCustomer(o.getCustomer().getName());
-            temp.setSeller(o.getSeller().getName());
+            temp.setSeller(o.getSellerEntity().getName());
             temp.setDate(o.getDate());
             temp.setSource(o.getSource());
             temp.setStatus(o.getStatus());

@@ -1,19 +1,13 @@
 package com.sellerapp.seller;
 
 import com.sellerapp.AuthException;
-import com.sellerapp.AuthFilter;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RestController
 public class SellerController {
@@ -22,7 +16,7 @@ public class SellerController {
     private SellerService sellerservice;
 
     @RequestMapping("/sellers")
-    public List<Seller> getSellers(){ return sellerservice.getSeller(); }
+    public List<SellerEntity> getSellers(){ return sellerservice.getSeller(); }
 
     @RequestMapping("/details/seller")
     public SellerResponseView getSellerId(HttpServletRequest request) throws AuthException{

@@ -1,10 +1,7 @@
 package com.sellerapp.order;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sellerapp.customer.Customer;
-import com.sellerapp.product.Product;
-import com.sellerapp.seller.Seller;
+import com.sellerapp.seller.SellerEntity;
 import com.sun.istack.NotNull;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
@@ -41,7 +38,7 @@ public class Orders {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "sid")
-    private Seller seller;
+    private SellerEntity sellerEntity;
 
     @NotNull
     @Column(name = "datetime")

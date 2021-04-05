@@ -1,10 +1,8 @@
 package com.sellerapp;
 
-import com.sellerapp.order.OrderService;
 import com.sellerapp.seller.SellerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -15,7 +13,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -42,7 +39,7 @@ public class AuthFilter extends GenericFilterBean {
                     Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
                             .parseClaimsJws(token).getBody();
 
-                    httpRequest.setAttribute("sid", sellerRepository.findByEmail(claims.get("email").toString()).getSid());
+                    httpRequest.setAttribute("sid", sellerRepository.findByEmail(claims.get("email").toString()).getSellerId());
 
                 }catch (Exception e) {
                     httpResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "invalid/expired token");

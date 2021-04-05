@@ -9,14 +9,14 @@ import java.util.Date;
 
 @Service
 public class SellerJwt {
-    public String generateJWT(Seller seller) {
+    public String generateJWT(SellerEntity sellerEntity) {
         long timestamp = System.currentTimeMillis();
         String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
-                .claim("email", seller.getEmail())
-                .claim("name", seller.getName())
-                .claim("available", seller.isAvailable())
+                .claim("email", sellerEntity.getEmail())
+                .claim("name", sellerEntity.getName())
+                .claim("available", sellerEntity.isAvailable())
                 .compact();
         return token;
     }

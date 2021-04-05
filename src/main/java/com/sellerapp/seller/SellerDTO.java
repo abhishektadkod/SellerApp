@@ -1,6 +1,5 @@
 package com.sellerapp.seller;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -8,7 +7,7 @@ import java.util.Optional;
 @Service
 public class SellerDTO {
 
-    public SellerResponseView ConvertToResponseView(Optional<Seller> seller){
+    public SellerResponseView ConvertToResponseView(Optional<SellerEntity> seller){
         SellerResponseView response = new SellerResponseView();
         response.setName(seller.get().getName());
         response.setAvailable(seller.get().isAvailable());
@@ -17,8 +16,8 @@ public class SellerDTO {
         return response;
     }
 
-    public Seller ConvertToSellerEntity(SellerRequestView sellerRequestView){
-        Seller sellerEntity = new Seller();
+    public SellerEntity ConvertToSellerEntity(SellerRequestView sellerRequestView){
+        SellerEntity sellerEntity = new SellerEntity();
         sellerEntity.setName(sellerRequestView.getName());
         sellerEntity.setEmail(sellerRequestView.getEmail());
         sellerEntity.setAvailable(sellerRequestView.isAvailable());

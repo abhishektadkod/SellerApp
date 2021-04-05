@@ -1,0 +1,46 @@
+package com.sellerapp.seller;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sellerapp.product.Product;
+import com.sun.istack.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@Table(name = "Seller")
+@Entity
+public class SellerEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sid")
+    private int sellerId;
+
+    @NotNull
+    @Column(name = "email")
+    private String email;
+
+    @NotNull
+    @Column(name = "password")
+    private String password;
+
+    @NotNull
+    @Column(name = "datetime")
+    @CreationTimestamp
+    private Date date;
+
+    @NotNull
+    @Column(name = "name")
+    private String name;
+
+    @NotNull
+    @Column(name="available")
+    private boolean available;
+
+}
