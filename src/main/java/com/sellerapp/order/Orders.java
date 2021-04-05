@@ -6,15 +6,20 @@ import com.sellerapp.customer.Customer;
 import com.sellerapp.product.Product;
 import com.sellerapp.seller.Seller;
 import com.sun.istack.NotNull;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.*;
+
+
+@TypeDefs({
+        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
 
 
 @Data
@@ -51,8 +56,12 @@ public class Orders {
     @Column(name = "source")
     private String source;
 
-    @OneToMany(mappedBy = "orders")
-    @JsonManagedReference
-    private List<OrderItems> orderItems = new ArrayList<OrderItems>();
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private List<OrderItems> orderItems;
+
+    @NotNull
+    @Column(name="total")
+    private float totalPrice;
 
 }

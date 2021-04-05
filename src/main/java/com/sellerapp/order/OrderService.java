@@ -1,6 +1,9 @@
 package com.sellerapp.order;
 
+import com.sellerapp.customer.Customer;
+import com.sellerapp.product.Product;
 import com.sellerapp.product.ProductRepository;
+import com.sellerapp.seller.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +16,6 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private OrderItemsRepository orderItemsRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -37,12 +37,37 @@ public class OrderService {
         return order;
     }
 
-    public void addOrders(Orders orders) {
-        orderRepository.save(orders);
-        for(OrderItems item : orders.getOrderItems()) {
-            item.setOrders(orders);
-            orderItemsRepository.save(item);
+    public void addOrders(OrderRequestView orders) {
+        Orders order = new Orders();
+        Customer customer = new Customer();
+        Seller seller = new Seller();
+        List<OrderItems> orderItems = new ArrayList<OrderItems>();
+        float totalPrice=0;
+
+        customer.setCid(orders.getCid());
+        seller.setSid(orders.getSid());
+        order.setCustomer(customer);
+        order.setSeller(seller);
+        order.setStatus(orders.getStatus());
+        order.setSource(orders.getSource());
+
+        for(OrderItemsRequestView item: orders.getOrderItems()){
+            OrderItems newItem = new OrderItems();
+            Product product = productRepository.findById(item.getProductsId()).get();
+            newItem.setItemId(item.getItemId());
+            newItem.setProductName(product.getName());
+            newItem.setSkuId(product.getSku_id());
+            newItem.setOrderCompletionTime(product.getBasic_eta());
+            newItem.setPrice(product.getPrice());
+            newItem.setQuantity(item.getQuantity());
+            orderItems.add(newItem);
+            totalPrice+= item.getQuantity()*product.getPrice();
         }
+
+        order.setOrderItems(orderItems);
+
+        order.setTotalPrice(totalPrice);
+        orderRepository.save(order);
     }
 
     public void updateOrdersById(Orders orders, int oid) {

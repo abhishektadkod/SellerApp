@@ -1,16 +1,11 @@
 package com.sellerapp.seller;
 
 import com.sellerapp.AuthException;
-import com.sellerapp.Constants;
 import com.sellerapp.DatabaseException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -19,21 +14,12 @@ public class SellerService {
     @Autowired
     private SellerRepository sellerRepository;
 
-    private Map<String, String> generateJWTToken(Seller seller) {
-        long timestamp = System.currentTimeMillis();
-        String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
-                .setIssuedAt(new Date(timestamp))
-                .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
-                .claim("email", seller.getEmail())
-                .claim("Name", seller.getName())
-                .claim("Available", seller.isAvailable())
-                .compact();
-        Map<String, String> map = new HashMap<>();
-        map.put("name",seller.getName());
-        map.put("token", token);
-        map.put("response", "Login Successful!");
-        return map;
-    }
+    @Autowired
+    private SellerDTO sellerDTO;
+
+    @Autowired
+    private SellerJwt sellerJwt;
+
 
     public List<Seller> getSeller() {
         List<Seller> sellers = new ArrayList<>();
@@ -41,36 +27,40 @@ public class SellerService {
         return sellers;
     }
 
-    public Map<String, String> getSellerById(int id){
-        Map<String, String> map = new HashMap<>();
+    public SellerResponseView getSellerById(int id){
         Optional<Seller> seller = sellerRepository.findById(id);
-        map.put("name",seller.get().getName());
-        map.put("email",seller.get().getEmail());
-        map.put("available",String.valueOf(seller.get().isAvailable()));
-        map.put("date",String.valueOf(seller.get().getDate()));
-        return map;
+        SellerResponseView response = sellerDTO.ConvertToResponseView(seller);
+        return response;
     }
 
-    public Map<String,String> addSeller(Seller seller) throws DatabaseException {
-        String password = seller.getPassword();
+    public Map<String,String> addSeller(SellerRequestView sellerRequestView) throws DatabaseException {
+        String password = sellerRequestView.getPassword();
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        seller.setPassword(hashedPassword);
-        Long count = sellerRepository.countByEmail(seller.getEmail());
+        sellerRequestView.setPassword(hashedPassword);
+        Seller sellerEntity = sellerDTO.ConvertToSellerEntity(sellerRequestView);
+        Long count = sellerRepository.countByEmail(sellerRequestView.getEmail());
         if (count > 0)
             throw new DatabaseException("Email already in use");
-        sellerRepository.save(seller);
-        return generateJWTToken(seller);
+        sellerRepository.save(sellerEntity);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", sellerJwt.generateJWT(sellerEntity));
+        response.put("response", "Login Successful!");
+        return response;
     }
 
-    public Map<String, String> loginSeller(Seller seller) throws DatabaseException{
-        String password = seller.getPassword();
-        String email  = seller.getEmail();
+    public Map<String, String> loginSeller(SellerRequestView sellerRequestView) throws DatabaseException{
+        String password = sellerRequestView.getPassword();
+        String email  = sellerRequestView.getEmail();
+
 
         try {
             if(!BCrypt.checkpw(password, sellerRepository.findByEmail(email).getPassword()))
                 throw new AuthException("Invalid email/password");
 
-            return generateJWTToken(sellerRepository.findByEmail(email));
+            Map<String, String> response = new HashMap<>();
+            response.put("token", sellerJwt.generateJWT(sellerRepository.findByEmail(email)));
+            response.put("response", "Login Successful!");
+            return response;
         }catch (EmptyResultDataAccessException e) {
             throw new AuthException("Invalid email/password");
         }

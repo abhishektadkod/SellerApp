@@ -27,6 +27,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation "org.mindrot:jbcrypt:0.4"
 	implementation('io.jsonwebtoken:jjwt:0.2')
+	implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '1.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

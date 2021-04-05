@@ -39,10 +39,8 @@ public class Seller {
     @Column(name = "name")
     private String name;
 
-
     @NotNull
     @Column(name="available")
     private boolean available;
 
 }
-

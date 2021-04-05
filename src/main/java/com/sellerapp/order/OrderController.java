@@ -32,7 +32,7 @@ public class OrderController {
         return  orderservice.getOrdersBySeller(sid);}
 
     @PostMapping(value="/orders")
-    public ResponseEntity<String> addOrders (@Validated @RequestBody Orders Orders) throws Exception {
+    public ResponseEntity<String> addOrders (@Validated @RequestBody OrderRequestView Orders) throws Exception {
         orderservice.addOrders(Orders);
         return ResponseEntity.ok("Order Added Successfully!");
 

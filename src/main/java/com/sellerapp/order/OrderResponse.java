@@ -17,6 +17,7 @@ public class OrderResponse {
     private Date date;
     private String status;
     private String source;
+    private float totalPrice;
     private List<OrderItems> orderItems = new ArrayList<OrderItems>();
 
     public List<OrderResponse> getOrderResponse(List<Orders> orders){
@@ -29,6 +30,7 @@ public class OrderResponse {
             temp.setDate(o.getDate());
             temp.setSource(o.getSource());
             temp.setStatus(o.getStatus());
+            temp.setTotalPrice(o.getTotalPrice());
             temp.setOrderItems(o.getOrderItems());
             Orders.add(temp);
         }

@@ -2,6 +2,7 @@ package com.sellerapp.seller;
 
 import com.sellerapp.AuthException;
 import com.sellerapp.AuthFilter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class SellerController {
     public List<Seller> getSellers(){ return sellerservice.getSeller(); }
 
     @RequestMapping("/details/seller")
-    public Map<String,String> getSellerId(HttpServletRequest request) throws AuthException{
+    public SellerResponseView getSellerId(HttpServletRequest request) throws AuthException{
         try {
             int sid = (Integer) request.getAttribute("sid");
             return sellerservice.getSellerById(sid);
@@ -35,20 +36,20 @@ public class SellerController {
     }
 
     @PostMapping("/register/seller")
-     public ResponseEntity<Map<String, String>> addSeller(@RequestBody Seller seller) throws AuthException{
+     public ResponseEntity<Map<String, String>> addSeller(@RequestBody SellerRequestView seller) throws AuthException{
         return ResponseEntity.ok(sellerservice.addSeller(seller));
     }
 
     @PostMapping("/login/seller")
-    public ResponseEntity<Map<String, String>> loginSeller(@RequestBody Seller seller) throws AuthException {
+    public ResponseEntity<Map<String, String>> loginSeller(@RequestBody SellerRequestView seller) throws AuthException {
         return ResponseEntity.ok(sellerservice.loginSeller(seller));
     }
 
     @PutMapping("/update/seller")
-    public Map<String, String> updateSeller(HttpServletRequest request, @RequestBody Seller seller) throws AuthException{
+    public ResponseEntity<Map<String, String>> updateSeller(HttpServletRequest request, @RequestBody SellerRequestView seller) throws AuthException{
         try {
             int sid = (Integer) request.getAttribute("sid");
-            return sellerservice.updateSeller(sid,seller.isAvailable());
+            return ResponseEntity.ok(sellerservice.updateSeller(sid,seller.isAvailable()));
         }
         catch (Exception e){
             throw new AuthException("Authentication token not provided!");
