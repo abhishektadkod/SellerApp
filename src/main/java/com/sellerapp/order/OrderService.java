@@ -18,59 +18,32 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-    private OrderResponse orderResponse = new OrderResponse();
+    @Autowired
+    private OrderDTO orderDTO;
 
-    public List<OrderResponse> getOrders() {
+    public List<OrderResponseView> getOrders() {
         var orders = orderRepository.findAll();
-        return orderResponse.getOrderResponse(orders);
+        return orderDTO.ConvertToResponseView(orders);
     }
 
-    public Optional<Orders> getOrdersById(int id){
+    public Optional<OrderEntity> getOrdersById(int id){
         return orderRepository.findById(id);
     }
 
-    public Set<OrderResponse> getOrdersBySeller(int sid) {
-        List<Orders> orders = orderRepository.findBySellerEntitySellerId(sid);
-        Set<OrderResponse> order = new HashSet<OrderResponse>(orderResponse.getOrderResponse(orders));
+    public Set<OrderResponseView> getOrdersBySeller(int sid) {
+        List<OrderEntity> orders = orderRepository.findBySellerEntitySellerId(sid);
+        Set<OrderResponseView> order = new HashSet<OrderResponseView>(orderDTO.ConvertToResponseView(orders));
         return order;
     }
 
-    public void addOrders(OrderRequestView orders) {
-        Orders order = new Orders();
-        Customer customer = new Customer();
-        SellerEntity sellerEntity = new SellerEntity();
-        List<OrderItems> orderItems = new ArrayList<OrderItems>();
-        float totalPrice=0;
-
-        customer.setCid(orders.getCid());
-        sellerEntity.setSellerId(orders.getSid());
-        order.setCustomer(customer);
-        order.setSellerEntity(sellerEntity);
-        order.setStatus(orders.getStatus());
-        order.setSource(orders.getSource());
-
-        for(OrderItemsRequestView item: orders.getOrderItems()){
-            OrderItems newItem = new OrderItems();
-            Product product = productRepository.findById(item.getProductsId()).get();
-            newItem.setItemId(item.getItemId());
-            newItem.setProductName(product.getName());
-            newItem.setSkuId(product.getSku_id());
-            newItem.setOrderCompletionTime(product.getBasic_eta());
-            newItem.setPrice(product.getPrice());
-            newItem.setQuantity(item.getQuantity());
-            orderItems.add(newItem);
-            totalPrice+= item.getQuantity()*product.getPrice();
-        }
-
-        order.setOrderItems(orderItems);
-
-        order.setTotalPrice(totalPrice);
+    public void addOrders(OrderRequestView orderRequestView) {
+        OrderEntity order = orderDTO.ConvertToOrderEntity(orderRequestView);
         orderRepository.save(order);
     }
 
-    public void updateOrdersById(Orders orders, int oid) {
-        Optional<Orders> order = orderRepository.findById(oid);
-        order.get().setStatus(orders.getStatus());
+    public void updateOrdersById(OrderEntity orderEntity, int oid) {
+        Optional<OrderEntity> order = orderRepository.findById(oid);
+        order.get().setStatus(orderEntity.getStatus());
         orderRepository.save(order.get());
     }
 

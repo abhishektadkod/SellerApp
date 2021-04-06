@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,9 +24,11 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
-     public ResponseEntity<String> addCustomer(@RequestBody Customer customer){
+     public ResponseEntity<Map<String,String>> addCustomer(@RequestBody Customer customer){
         customerservice.addCustomer(customer);
-        return ResponseEntity.ok("Customer Added Successfully!");
+        Map<String,String> map = new HashMap<>();
+        map.put("response","Customer Added Successfully!");
+        return ResponseEntity.ok(map);
     }
 
     @PutMapping("/customer")

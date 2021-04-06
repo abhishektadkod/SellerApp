@@ -19,7 +19,7 @@ public class SellerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sid")
+    @Column(name = "sellerId")
     private int sellerId;
 
     @NotNull

@@ -1,9 +1,6 @@
 package com.sellerapp.customer;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sellerapp.order.Orders;
-import com.sellerapp.product.Product;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +17,8 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cid")
-    private int cid;
+    @Column(name = "customerId")
+    private int customerId;
 
     @NotNull
     @Column(name = "datetime")
@@ -33,10 +29,9 @@ public class Customer {
     @Column(name = "name")
     private String name;
 
-    /*@OneToMany(mappedBy = "customer")
-    @JsonManagedReference
-    private List<Orders> orders;*/
-
-
+    @NotNull
+    @Column(name = "address")
+    private String address;
+    
 }
 

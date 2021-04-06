@@ -1,19 +1,17 @@
-com/sellerapp/order/Orders.java
- com.sellerapp.order.Orders
-com/sellerapp/order/OrderResponse.java
- com.sellerapp.order.OrderResponse
 com/sellerapp/seller/SellerRequestView.java
  com.sellerapp.seller.SellerRequestView
 com/sellerapp/Constants.java
  com.sellerapp.Constants
+com/sellerapp/order/OrderResponseView.java
+ com.sellerapp.order.OrderResponseView
 com/sellerapp/order/OrderRequestView.java
  com.sellerapp.order.OrderRequestView
 com/sellerapp/order/OrderItemsRequestView.java
  com.sellerapp.order.OrderItemsRequestView
 com/sellerapp/DatabaseException.java
  com.sellerapp.DatabaseException
-com/sellerapp/customer/CustomerService.java
- com.sellerapp.customer.CustomerService
+com/sellerapp/order/OrderRepository.java
+ com.sellerapp.order.OrderRepository
 com/sellerapp/seller/SellerEntity.java
  com.sellerapp.seller.SellerEntity
 com/sellerapp/AuthFilter.java
@@ -24,10 +22,10 @@ com/sellerapp/DemoApplication.java
  com.sellerapp.DemoApplication
 com/sellerapp/seller/SellerRepository.java
  com.sellerapp.seller.SellerRepository
-com/sellerapp/seller/SellerController.java
- com.sellerapp.seller.SellerController
-com/sellerapp/seller/SellerJwt.java
- com.sellerapp.seller.SellerJwt
+com/sellerapp/order/OrderDTO.java
+ com.sellerapp.order.OrderDTO
+com/sellerapp/product/ProductRepository.java
+ com.sellerapp.product.ProductRepository
 com/sellerapp/product/Product.java
  com.sellerapp.product.Product
 com/sellerapp/seller/SellerDTO.java
@@ -36,23 +34,27 @@ com/sellerapp/AuthException.java
  com.sellerapp.AuthException
 com/sellerapp/seller/SellerResponseView.java
  com.sellerapp.seller.SellerResponseView
-com/sellerapp/order/OrderItems.java
- com.sellerapp.order.OrderItems
 com/sellerapp/seller/SellerService.java
  com.sellerapp.seller.SellerService
+com/sellerapp/order/OrderItemsEntity.java
+ com.sellerapp.order.OrderItemsEntity
+com/sellerapp/seller/SellerJwt.java
+ com.sellerapp.seller.SellerJwt
+com/sellerapp/seller/SellerController.java
+ com.sellerapp.seller.SellerController
+com/sellerapp/order/OrderEntity.java
+ com.sellerapp.order.OrderEntity
+com/sellerapp/product/ProductService.java
+ com.sellerapp.product.ProductService
 com/sellerapp/customer/CustomerController.java
  com.sellerapp.customer.CustomerController
 com/sellerapp/customer/Customer.java
  com.sellerapp.customer.Customer
-com/sellerapp/order/OrderController.java
- com.sellerapp.order.OrderController
-com/sellerapp/product/ProductRepository.java
- com.sellerapp.product.ProductRepository
 com/sellerapp/order/OrderService.java
  com.sellerapp.order.OrderService
-com/sellerapp/product/ProductService.java
- com.sellerapp.product.ProductService
-com/sellerapp/order/OrderRepository.java
- com.sellerapp.order.OrderRepository
+com/sellerapp/customer/CustomerService.java
+ com.sellerapp.customer.CustomerService
 com/sellerapp/product/ProductController.java
  com.sellerapp.product.ProductController
+com/sellerapp/order/OrderController.java
+ com.sellerapp.order.OrderController

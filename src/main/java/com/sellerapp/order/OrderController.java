@@ -6,9 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class OrderController {
@@ -17,29 +15,35 @@ public class OrderController {
     private OrderService orderservice;
 
     @GetMapping("/orders")
-    public List<OrderResponse> getOrdersS(){
+    public List<OrderResponseView> getOrdersS(){
         return orderservice.getOrders();
     }
 
     @GetMapping("/orders/{id}")
-    public Optional<Orders> getOrdersId(@PathVariable int id){
+    public Optional<OrderEntity> getOrdersId(@PathVariable int id){
         return orderservice.getOrdersById(id);
     }
 
     @GetMapping("/orders/seller")
-    public Set<OrderResponse> getOrdersBySeller(HttpServletRequest request){
+    public Set<OrderResponseView> getOrdersBySeller(HttpServletRequest request){
         int sid =(Integer) request.getAttribute("sid");
         return  orderservice.getOrdersBySeller(sid);}
 
     @PostMapping(value="/orders")
-    public ResponseEntity<String> addOrders (@Validated @RequestBody OrderRequestView Orders) throws Exception {
+    public ResponseEntity<Map<String,String>> addOrders (@Validated @RequestBody OrderRequestView Orders) throws Exception {
         orderservice.addOrders(Orders);
-        return ResponseEntity.ok("Order Added Successfully!");
-
+        Map<String,String> map = new HashMap<>();
+        map.put("response","Order Added Successfully!");
+        return ResponseEntity.ok(map);
     }
 
     @PutMapping("/orders/{id}")
-    public void updateOrdersById(@RequestBody Orders Orders, @PathVariable int id){ orderservice.updateOrdersById(Orders,id);}
+    public ResponseEntity<Map<String,String>> updateOrdersById(@RequestBody OrderEntity OrderEntity, @PathVariable int id){
+        orderservice.updateOrdersById(OrderEntity,id);
+        Map<String,String> map = new HashMap<>();
+        map.put("response","Order Updated Successfully!");
+        return ResponseEntity.ok(map);
+    }
 
     @DeleteMapping("/orders/{id}")
     public void deleteOrders(@PathVariable int id){ orderservice.deleteOrders(id);}

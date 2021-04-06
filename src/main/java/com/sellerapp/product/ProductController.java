@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,17 +39,16 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-     public ResponseEntity<String> addProduct(@RequestBody Product product,HttpServletRequest request){
+     public ResponseEntity<Map<String,String>> addProduct(@RequestBody Product product,HttpServletRequest request){
         int sid =(Integer) request.getAttribute("sid");
-        productservice.addProduct(product,sid);
-        return ResponseEntity.ok("Product Added Successfully!");
+        return ResponseEntity.ok(productservice.addProduct(product,sid));
     }
 
     @PutMapping("/product")
-    public void updateProduct(@RequestBody Product product,HttpServletRequest request) throws AuthException {
+    public Map<String, String> updateProduct(@RequestBody Product product, HttpServletRequest request) throws AuthException {
         try {
             int sid = (Integer) request.getAttribute("sid");
-            productservice.updateProduct(product, sid);
+            return productservice.updateProduct(product, sid);
         } catch (Exception e) {
             throw new AuthException("Authorization token not provided!");
         }
