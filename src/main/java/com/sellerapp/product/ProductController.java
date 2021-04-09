@@ -3,7 +3,6 @@ package com.sellerapp.product;
 import com.sellerapp.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,17 +17,17 @@ public class ProductController {
     private ProductService productservice;
 
     @GetMapping("/product")
-    public List<Product> getProducts(){
+    public List<ProductEntity> getProducts(){
         return productservice.getProduct();
     }
 
     @GetMapping("/product/{id}")
-    public Optional<Product> getProductId(@PathVariable int id){
+    public Optional<ProductEntity> getProductId(@PathVariable int id){
         return productservice.getProductById(id);
     }
 
     @GetMapping("/product/seller")
-    public List<Product> getSellerProducts(HttpServletRequest request) throws AuthException{
+    public List<ProductEntity> getSellerProducts(HttpServletRequest request) throws AuthException{
         try {
             int id = (Integer) request.getAttribute("sid");
             return productservice.getSellerProducts(id);
@@ -39,16 +38,20 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-     public ResponseEntity<Map<String,String>> addProduct(@RequestBody Product product,HttpServletRequest request){
-        int sid =(Integer) request.getAttribute("sid");
-        return ResponseEntity.ok(productservice.addProduct(product,sid));
+    public ResponseEntity<Map<String,String>> addProduct(@RequestBody ProductEntity productEntity , HttpServletRequest request) throws AuthException {
+        try {
+            int sid = (Integer) request.getAttribute("sid");
+            return ResponseEntity.ok(productservice.addProduct(productEntity , sid));
+        } catch (Exception e) {
+            throw new AuthException("Authentication token not provided!");
+        }
     }
 
     @PutMapping("/product")
-    public Map<String, String> updateProduct(@RequestBody Product product, HttpServletRequest request) throws AuthException {
+    public Map<String, String> updateProduct(@RequestBody ProductEntity productEntity , HttpServletRequest request) throws AuthException {
         try {
             int sid = (Integer) request.getAttribute("sid");
-            return productservice.updateProduct(product, sid);
+            return productservice.updateProduct(productEntity , sid);
         } catch (Exception e) {
             throw new AuthException("Authorization token not provided!");
         }

@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequestView{
 
-    int cid;
-    int sid;
+    CustomerEntity customer;
+    int sellerId;
     String status;
-    String source;
+    String businessUnit;
     List<OrderItemsRequestView> orderItems;
 }

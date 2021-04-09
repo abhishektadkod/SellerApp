@@ -1,5 +1,6 @@
 package com.sellerapp.order;
 
+import com.sellerapp.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,17 +21,23 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public Optional<OrderEntity> getOrdersId(@PathVariable int id){
+    public OrderResponseView getOrdersId(@PathVariable int id){
         return orderservice.getOrdersById(id);
     }
 
     @GetMapping("/orders/seller")
-    public Set<OrderResponseView> getOrdersBySeller(HttpServletRequest request){
-        int sid =(Integer) request.getAttribute("sid");
-        return  orderservice.getOrdersBySeller(sid);}
+    public Set<OrderResponseView> getOrdersBySeller(HttpServletRequest request) throws AuthException{
+        try {
+            int sid = (Integer) request.getAttribute("sid");
+            return orderservice.getOrdersBySeller(sid);
+        }
+     catch(Exception e) {
+            throw new AuthException("Authentication token not provided!");
+        }}
+
 
     @PostMapping(value="/orders")
-    public ResponseEntity<Map<String,String>> addOrders (@Validated @RequestBody OrderRequestView Orders) throws Exception {
+    public ResponseEntity<Map<String,String>> addOrders (@Validated @RequestBody OrderRequestView Orders){
         orderservice.addOrders(Orders);
         Map<String,String> map = new HashMap<>();
         map.put("response","Order Added Successfully!");
@@ -38,11 +45,16 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{id}")
-    public ResponseEntity<Map<String,String>> updateOrdersById(@RequestBody OrderEntity OrderEntity, @PathVariable int id){
-        orderservice.updateOrdersById(OrderEntity,id);
-        Map<String,String> map = new HashMap<>();
-        map.put("response","Order Updated Successfully!");
-        return ResponseEntity.ok(map);
+    public ResponseEntity<Map<String,String>> updateOrdersById(HttpServletRequest request, @RequestBody OrderEntity OrderEntity, @PathVariable int id) throws AuthException{
+        try {
+            orderservice.updateOrdersById(OrderEntity, id);
+            Map<String, String> map = new HashMap<>();
+            map.put("response", "Order Updated Successfully!");
+            return ResponseEntity.ok(map);
+        }
+         catch(Exception e) {
+            throw new AuthException("Authentication token not provided!");
+        }
     }
 
     @DeleteMapping("/orders/{id}")

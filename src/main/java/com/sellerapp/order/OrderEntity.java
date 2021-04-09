@@ -1,6 +1,5 @@
 package com.sellerapp.order;
 
-import com.sellerapp.customer.Customer;
 import com.sellerapp.seller.SellerEntity;
 import com.sun.istack.NotNull;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -30,10 +29,9 @@ public class OrderEntity {
     @Column(name = "orderId")
     private int orderId;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "cid")
-    private Customer customer;
+    @Type(type = "jsonb")
+    @Column(name="customer",columnDefinition = "jsonb")
+    private CustomerEntity customer;
 
     @NotNull
     @ManyToOne
@@ -43,15 +41,15 @@ public class OrderEntity {
     @NotNull
     @Column(name = "datetime")
     @CreationTimestamp
-    private Date date;
+    private Date orderDate;
 
     @NotNull
     @Column(name = "status")
     private String status;
 
     @NotNull
-    @Column(name = "source")
-    private String source;
+    @Column(name = "businessUnit")
+    private String businessUnit;
 
     @Type(type = "jsonb")
     @Column(name="order_items",columnDefinition = "jsonb")

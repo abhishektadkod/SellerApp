@@ -1,8 +1,8 @@
 package com.sellerapp.order;
 
-import com.sellerapp.customer.Customer;
-import com.sellerapp.product.Product;
+import com.sellerapp.product.ProductEntity;
 import com.sellerapp.product.ProductRepository;
+import com.sellerapp.seller.SellerDTO;
 import com.sellerapp.seller.SellerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,32 +15,38 @@ public class OrderDTO {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private SellerDTO sellerDTO;
+
     public OrderEntity ConvertToOrderEntity(OrderRequestView orderRequestView){
         OrderEntity order = new OrderEntity();
-        Customer customer = new Customer();
         SellerEntity sellerEntity = new SellerEntity();
         List<OrderItemsEntity> orderItemEntities = new ArrayList<OrderItemsEntity>();
         float totalPrice=0;
 
-        customer.setCustomerId(orderRequestView.getCid()); //To Join Customer information to orders
-        sellerEntity.setSellerId(orderRequestView.getSid()); //To Join Seller information to orders
+        sellerEntity.setSellerId(orderRequestView.getSellerId()); //To Join Seller information to orders
 
-        order.setCustomer(customer);
+        order.setCustomer(orderRequestView.getCustomer());
         order.setSellerEntity(sellerEntity);
         order.setStatus(orderRequestView.getStatus());
-        order.setSource(orderRequestView.getSource());
+        order.setBusinessUnit(orderRequestView.getBusinessUnit());
 
         for(OrderItemsRequestView item: orderRequestView.getOrderItems()){
             OrderItemsEntity newItem = new OrderItemsEntity();
-            Product product = productRepository.findById(item.getProductsId()).get();
+            ProductEntity productEntity = productRepository.findById(item.getProductsId()).get();
+
             newItem.setItemId(item.getItemId());
-            newItem.setProductName(product.getName());
-            newItem.setSkuId(product.getSku_id());
-            newItem.setOrderCompletionTime(product.getBasic_eta());
-            newItem.setPrice(product.getPrice());
+            newItem.setProductName(productEntity.getName());
+            newItem.setSkuId(productEntity.getSku_id());
+            newItem.setOrderCompletionTime(productEntity.getBasic_eta());
+            newItem.setPrice(productEntity.getPrice());
             newItem.setQuantity(item.getQuantity());
+            newItem.setDescription(productEntity.getDescription());
+            newItem.setImage(productEntity.getImage());
+            newItem.setUpc(productEntity.getUpc());
+
             orderItemEntities.add(newItem);
-            totalPrice+= item.getQuantity()*product.getPrice();
+            totalPrice+= item.getQuantity()* productEntity.getPrice();
         }
 
         order.setOrderItemEntities(orderItemEntities);
@@ -49,20 +55,24 @@ public class OrderDTO {
 
         return order;
     }
+
+    public OrderResponseView ConvertToResponseView(OrderEntity orders){
+        OrderResponseView orderResponseItem = new OrderResponseView();
+        orderResponseItem.setOid(orders.getOrderId());
+        orderResponseItem.setCustomer(orders.getCustomer());
+        orderResponseItem.setSeller(sellerDTO.ConvertToResponseView(orders.getSellerEntity()));
+        orderResponseItem.setDate(orders.getOrderDate());
+        orderResponseItem.setBusinessUnit(orders.getBusinessUnit());
+        orderResponseItem.setStatus(orders.getStatus());
+        orderResponseItem.setTotalPrice(orders.getTotalPrice());
+        orderResponseItem.setOrderItem(orders.getOrderItemEntities());
+        return orderResponseItem;
+    }
     
-    public List<OrderResponseView> ConvertToResponseView(List<OrderEntity> orderEntities){
+    public List<OrderResponseView> ConvertToResponseViewList(List<OrderEntity> orderEntities){
             List<OrderResponseView> orderResponseViews = new ArrayList<>();
             for(OrderEntity orders:orderEntities){
-                OrderResponseView orderResponseItem = new OrderResponseView();
-                orderResponseItem.setOid(orders.getOrderId());
-                orderResponseItem.setCustomer(orders.getCustomer().getName());
-                orderResponseItem.setSeller(orders.getSellerEntity().getName());
-                orderResponseItem.setDate(orders.getDate());
-                orderResponseItem.setSource(orders.getSource());
-                orderResponseItem.setStatus(orders.getStatus());
-                orderResponseItem.setTotalPrice(orders.getTotalPrice());
-                orderResponseItem.setOrderItem(orders.getOrderItemEntities());
-                orderResponseViews.add(orderResponseItem);
+                orderResponseViews.add(ConvertToResponseView(orders));
             }
             return orderResponseViews;
         

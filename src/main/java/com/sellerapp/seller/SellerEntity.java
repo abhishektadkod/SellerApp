@@ -1,7 +1,5 @@
 package com.sellerapp.seller;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sellerapp.product.Product;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -40,7 +37,24 @@ public class SellerEntity {
     private String name;
 
     @NotNull
+    @Column(name = "shortName")
+    private String shortName;
+
+    @NotNull
+    @Column(name = "phone")
+    private String phone;
+
+    @NotNull
     @Column(name="available")
     private boolean available;
+
+    @NotNull
+    @Column(name="type")
+    private String type;
+
+    @NotNull
+    @Column(name="latLon")
+    private String latLon;
+
 
 }

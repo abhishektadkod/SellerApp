@@ -12,4 +12,8 @@ public class SellerRequestView {
     String email;
     String password;
     boolean available;
+    String shortName;
+    String phone;
+    String type;
+    String latLon;
 }

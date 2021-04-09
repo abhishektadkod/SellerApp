@@ -29,7 +29,7 @@ public class SellerService {
 
     public SellerResponseView getSellerById(int id){
         Optional<SellerEntity> seller = sellerRepository.findById(id);
-        SellerResponseView response = sellerDTO.ConvertToResponseView(seller);
+        SellerResponseView response = sellerDTO.ConvertToResponseView(seller.get());
         return response;
     }
 

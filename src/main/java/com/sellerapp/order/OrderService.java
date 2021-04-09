@@ -1,9 +1,7 @@
 package com.sellerapp.order;
 
-import com.sellerapp.customer.Customer;
-import com.sellerapp.product.Product;
 import com.sellerapp.product.ProductRepository;
-import com.sellerapp.seller.SellerEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +20,17 @@ public class OrderService {
     private OrderDTO orderDTO;
 
     public List<OrderResponseView> getOrders() {
-        var orders = orderRepository.findAll();
-        return orderDTO.ConvertToResponseView(orders);
+        var orderEntitiesList = orderRepository.findAll();
+        return orderDTO.ConvertToResponseViewList(orderEntitiesList);
     }
 
-    public Optional<OrderEntity> getOrdersById(int id){
-        return orderRepository.findById(id);
+    public OrderResponseView getOrdersById(int id){
+        return orderDTO.ConvertToResponseView(orderRepository.findById(id).get());
     }
 
     public Set<OrderResponseView> getOrdersBySeller(int sid) {
         List<OrderEntity> orders = orderRepository.findBySellerEntitySellerId(sid);
-        Set<OrderResponseView> order = new HashSet<OrderResponseView>(orderDTO.ConvertToResponseView(orders));
+        Set<OrderResponseView> order = new HashSet<OrderResponseView>(orderDTO.ConvertToResponseViewList(orders));
         return order;
     }
 

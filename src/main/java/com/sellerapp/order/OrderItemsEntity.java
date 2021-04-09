@@ -15,6 +15,9 @@ public class OrderItemsEntity {
     private int itemId;
     private String productName;
     private String skuId;
+    private  String upc;
+    private String description;
+    private  String image;
     private int orderCompletionTime;
     private  float price;
     private int quantity;
