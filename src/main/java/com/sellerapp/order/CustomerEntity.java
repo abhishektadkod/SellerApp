@@ -13,7 +13,7 @@ public class CustomerEntity {
     private String email;
     private long phone;
     private String address;
-    private String latLon;
+    private SphericalCoordinatesView location;
 
 }
 

@@ -5,12 +5,14 @@ import com.sun.istack.NotNull;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 
 @TypeDefs({
@@ -58,5 +60,13 @@ public class OrderEntity {
     @NotNull
     @Column(name="total")
     private float totalPrice;
+
+    @NotNull
+    @Column(name="orderPreparationTime")
+    private float orderPreparationTime;
+
+    @NotNull
+    @Column(name="orderFulfillmentTime")
+    private float orderFulfillmentTime;
 
 }

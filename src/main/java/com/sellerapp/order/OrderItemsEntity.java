@@ -18,7 +18,7 @@ public class OrderItemsEntity {
     private  String upc;
     private String description;
     private  String image;
-    private int orderCompletionTime;
+    private int basic_etc;
     private  float price;
     private int quantity;
 

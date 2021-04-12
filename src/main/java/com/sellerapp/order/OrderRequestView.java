@@ -15,5 +15,6 @@ public class OrderRequestView{
     int sellerId;
     String status;
     String businessUnit;
+    float orderFulfillmentTime;
     List<OrderItemsRequestView> orderItems;
 }

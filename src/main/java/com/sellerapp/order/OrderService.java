@@ -1,11 +1,13 @@
 package com.sellerapp.order;
 
 import com.sellerapp.product.ProductRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -28,9 +30,9 @@ public class OrderService {
         return orderDTO.ConvertToResponseView(orderRepository.findById(id).get());
     }
 
-    public Set<OrderResponseView> getOrdersBySeller(int sid) {
+    public Set<OrderSellerResponseView> getOrdersBySeller(int sid) {
         List<OrderEntity> orders = orderRepository.findBySellerEntitySellerId(sid);
-        Set<OrderResponseView> order = new HashSet<OrderResponseView>(orderDTO.ConvertToResponseViewList(orders));
+        Set<OrderSellerResponseView> order = new HashSet<OrderSellerResponseView>(orderDTO.ConvertToSellerResponseViewList(orders));
         return order;
     }
 

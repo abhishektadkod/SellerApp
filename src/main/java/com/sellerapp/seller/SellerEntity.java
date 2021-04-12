@@ -1,12 +1,20 @@
 package com.sellerapp.seller;
 
 import com.sun.istack.NotNull;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.Date;
+
+@TypeDefs({
+        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
 
 @Data
 @NoArgsConstructor
@@ -52,9 +60,9 @@ public class SellerEntity {
     @Column(name="type")
     private String type;
 
-    @NotNull
-    @Column(name="latLon")
-    private String latLon;
+    @Type(type = "jsonb")
+    @Column(name="location",columnDefinition = "jsonb")
+    private SellerLocationEntity location;
 
 
 }

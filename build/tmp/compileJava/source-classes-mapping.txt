@@ -2,12 +2,14 @@ com/sellerapp/order/CustomerEntity.java
  com.sellerapp.order.CustomerEntity
 com/sellerapp/seller/SellerRequestView.java
  com.sellerapp.seller.SellerRequestView
+com/sellerapp/seller/SellerLocationEntity.java
+ com.sellerapp.seller.SellerLocationEntity
 com/sellerapp/Constants.java
  com.sellerapp.Constants
-com/sellerapp/order/OrderResponseView.java
- com.sellerapp.order.OrderResponseView
-com/sellerapp/order/OrderController.java
- com.sellerapp.order.OrderController
+com/sellerapp/order/OrderEntity.java
+ com.sellerapp.order.OrderEntity
+com/sellerapp/seller/SellerJwt.java
+ com.sellerapp.seller.SellerJwt
 com/sellerapp/order/OrderItemsRequestView.java
  com.sellerapp.order.OrderItemsRequestView
 com/sellerapp/DatabaseException.java
@@ -26,10 +28,12 @@ com/sellerapp/product/ProductController.java
  com.sellerapp.product.ProductController
 com/sellerapp/product/ProductRepository.java
  com.sellerapp.product.ProductRepository
-com/sellerapp/order/OrderService.java
- com.sellerapp.order.OrderService
+com/sellerapp/order/OrderItemsEntity.java
+ com.sellerapp.order.OrderItemsEntity
 com/sellerapp/AuthException.java
  com.sellerapp.AuthException
+com/sellerapp/order/SphericalCoordinatesView.java
+ com.sellerapp.order.SphericalCoordinatesView
 com/sellerapp/product/ProductDTO.java
  com.sellerapp.product.ProductDTO
 com/sellerapp/seller/SellerResponseView.java
@@ -42,15 +46,16 @@ com/sellerapp/product/ProductService.java
  com.sellerapp.product.ProductService
 com/sellerapp/seller/SellerDTO.java
  com.sellerapp.seller.SellerDTO
-com/sellerapp/order/OrderDTO.java
- com.sellerapp.order.OrderDTO
-com/sellerapp/order/OrderRepository.java
- com.sellerapp.order.OrderRepository
-com/sellerapp/order/OrderEntity.java
- com.sellerapp.order.OrderEntity
-com/sellerapp/seller/SellerJwt.java
- com.sellerapp.seller.SellerJwt
 com/sellerapp/order/OrderRequestView.java
  com.sellerapp.order.OrderRequestView
-com/sellerapp/order/OrderItemsEntity.java
- com.sellerapp.order.OrderItemsEntity
+com/sellerapp/order/OrderRepository.java
+ com.sellerapp.order.OrderRepository
+com/sellerapp/order/OrderResponseView.java
+ com.sellerapp.order.OrderResponseView
+ com.sellerapp.order.OrderSellerResponseView
+com/sellerapp/order/OrderController.java
+ com.sellerapp.order.OrderController
+com/sellerapp/order/OrderService.java
+ com.sellerapp.order.OrderService
+com/sellerapp/order/OrderDTO.java
+ com.sellerapp.order.OrderDTO

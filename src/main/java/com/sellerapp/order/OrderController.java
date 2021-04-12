@@ -7,7 +7,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class OrderController {
@@ -26,7 +29,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/seller")
-    public Set<OrderResponseView> getOrdersBySeller(HttpServletRequest request) throws AuthException{
+    public Set<OrderSellerResponseView> getOrdersBySeller(HttpServletRequest request) throws AuthException{
         try {
             int sid = (Integer) request.getAttribute("sid");
             return orderservice.getOrdersBySeller(sid);

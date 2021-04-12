@@ -2,8 +2,6 @@ package com.sellerapp.seller;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class SellerDTO {
 
@@ -15,7 +13,7 @@ public class SellerDTO {
         response.setDate(seller.getDate());
         response.setShortName(seller.getShortName());
         response.setPhone(seller.getPhone());
-        response.setLatLon(seller.getLatLon());
+        response.setLocation(seller.getLocation());
         response.setType(seller.getType());
         return response;
     }
@@ -28,7 +26,7 @@ public class SellerDTO {
         sellerEntity.setPassword(sellerRequestView.getPassword());
         sellerEntity.setShortName(sellerRequestView.getShortName());
         sellerEntity.setPhone(sellerRequestView.getPhone());
-        sellerEntity.setLatLon(sellerRequestView.getLatLon());
+        sellerEntity.setLocation(sellerRequestView.getLocation());
         sellerEntity.setType(sellerRequestView.getType());
         return sellerEntity;
     }

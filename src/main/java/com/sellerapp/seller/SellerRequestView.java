@@ -15,5 +15,5 @@ public class SellerRequestView {
     String shortName;
     String phone;
     String type;
-    String latLon;
+    SellerLocationEntity location;
 }
