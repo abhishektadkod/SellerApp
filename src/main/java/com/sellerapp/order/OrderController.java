@@ -24,12 +24,12 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public OrderResponseView getOrdersId(@PathVariable int id){
+    public OrderAdminResponseView getOrdersId(@PathVariable int id){
         return orderservice.getOrdersById(id);
     }
 
     @GetMapping("/orders/seller")
-    public Set<OrderSellerResponseView> getOrdersBySeller(HttpServletRequest request) throws AuthException{
+    public Set<OrderResponseView> getOrdersBySeller(HttpServletRequest request) throws AuthException{
         try {
             int sid = (Integer) request.getAttribute("sid");
             return orderservice.getOrdersBySeller(sid);
@@ -37,7 +37,6 @@ public class OrderController {
      catch(Exception e) {
             throw new AuthException("Authentication token not provided!");
         }}
-
 
     @PostMapping(value="/orders")
     public ResponseEntity<Map<String,String>> addOrders (@Validated @RequestBody OrderRequestView Orders){
@@ -58,6 +57,14 @@ public class OrderController {
          catch(Exception e) {
             throw new AuthException("Authentication token not provided!");
         }
+    }
+
+    @PutMapping("/orders/{id}/delivery")
+    public ResponseEntity<Map<String,String>> addDeliveryResource(HttpServletRequest request, @RequestBody OrderEntity OrderEntity, @PathVariable int id) throws AuthException{
+            orderservice.addDeliveryResource(OrderEntity, id);
+            Map<String, String> map = new HashMap<>();
+            map.put("response", "Driver Added Successfully!");
+            return ResponseEntity.ok(map);
     }
 
     @DeleteMapping("/orders/{id}")
